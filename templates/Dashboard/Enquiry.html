@@ -1,0 +1,81 @@
+{% extends "partials/base.html" %}
+{% block title %}Confirmed{% endblock  %}
+{% load crispy_forms_tags%}
+{% block content %}
+{% include "partials/topnav.html"%}
+<div class="container">
+     <div class="row my-4">
+         <div class="col-md-4">
+             <div class="border bg-white p-3">
+                <h4>Add Reservations</h4>
+                <hr>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                
+                    <button type="submit" class="btn btn-success btn-block">Add Reservation</button>
+                </form>
+                
+                 
+             </div>
+         </div>
+         <div class="col-md-8">
+             <table class="table bg-white">
+                 <thead class="bg-info">
+                     <tr class="text-white">
+                         <th scope="col">Action</th>
+                         <th scope='col'>Date</th>
+                         <th scope='col'>Status</th>
+                         <th scope ='col'>TTL</th>
+                         <th scope="col">Sector</th>
+                         <th scope="col">Airline</th>
+                         <th scope="col">Pax No.</th>
+                         <th scope="col">Flt Time</th>
+                         <th scope="col">Agency</th>
+                         <th scope="col">Reference</th>
+                         <th scope="col">Remarks</th>
+                         
+                     </tr>
+                 </thead>
+                 <tbody>
+                    {%for confirmed in confirmed%}
+                     <tr>
+                         <td>
+                              <a class="btn btn-info btn-sm" href={% url "Confirmed_edit" confirmed.id %}>Edit</a>
+                              <a class="btn btn-danger btn-sm" href={% url "Confirmed_delete" confirmed.id %}>Delete</a>
+                         </td>
+                         <th scope="row"></th>
+                         <td>{{confirmed.date}}</td>
+                         <td>{{confirmed.sector}}</td>
+                         <td>{{confirmed.airline}}</td>
+                         <td>{{confirmed.paxNo}}</td>
+                         <td>{{confirmed.flightno}}</td>
+                         <td>{{confirmed.agency}}</td>
+                         <td>{{confirmed.reference}}</td>
+                         <td>{{confirmed.remarks}}</td>
+                         
+                     </tr>
+                     {% endfor %}
+                 </tbody>
+             </table>
+         </div>
+     </div>
+
+ </div>
+
+ <script>
+    // JavaScript to set the live date
+    const currentDate = new Date()
+    const day = currentDate.getDate().toString().padStart(2);
+    const month = currentDate.toLocaleString('en-US', { month: 'short' });
+    const year = currentDate.getFullYear(); // Get the year
+
+    const formattedDate = `${day}-${month}-${year}`;
+    
+    // Set the content of the element with id 'live-date'
+    document.getElementById('live-date').textContent = formattedDate;
+</script>
+
+
+ <!--End Table-->
+{% endblock%}
